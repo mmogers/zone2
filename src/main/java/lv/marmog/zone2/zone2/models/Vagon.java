@@ -49,6 +49,8 @@ public class Vagon extends UniqueEntity {
     @ManyToOne
     private CargoType cargoType;
 
+    private boolean isEmpty;
+
     public Vagon (UUID uuid){super (uuid);}
 
 }
