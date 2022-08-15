@@ -20,6 +20,7 @@ import javax.persistence.*;
 public class Vagon {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idvagon;
 
     private Double maxCapacity;

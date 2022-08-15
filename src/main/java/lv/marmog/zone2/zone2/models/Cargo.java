@@ -17,6 +17,7 @@ import javax.validation.constraints.Min;
 public class Cargo {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idcargo;
 
     private String cargoType;

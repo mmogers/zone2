@@ -18,6 +18,7 @@ import java.util.UUID;
 public class Train {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idtrain;
 
 
