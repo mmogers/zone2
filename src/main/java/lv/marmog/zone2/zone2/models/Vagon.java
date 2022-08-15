@@ -4,10 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import net.minidev.json.annotate.JsonIgnore;
-import org.hibernate.annotations.Loader;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
+
 import java.util.UUID;
 
 import javax.persistence.*;
@@ -19,27 +16,14 @@ import javax.persistence.*;
 @ToString (callSuper = true)
 @NoArgsConstructor
 @Entity
-@SQLDelete(sql=
-        "UPDATE Vagon" +
-        "SET deleted_at = NOW()" +
-        "WHERE id = ?")
-@Loader(namedQuery = "findVagonById")
-@NamedQuery(name = "findVagonById", query =
-        "FROM Vagon v " +
-        "WHERE " +
-        "v.id = :id AND " +
-        "deleted_at IS NULL")
-@Where(clause = "deleted_at IS NULL")
-public class Vagon extends UniqueEntity {
+
+public class Vagon {
 
     @Id
-    @SequenceGenerator(name = "vagon_seq_gen", sequenceName = "vagon_id_seq", allocationSize = 1)
-    @GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "vagon_seq_gen")
-    @JsonIgnore
-    private Integer id;
+    private Integer idvagon;
 
-    private Double maxCapacityInTons;
-    private Double currentCapacityInTons;
+    private Double maxCapacity;
+    private Double currentCapacity;
 
     @ManyToOne
     private Train train;
@@ -47,10 +31,8 @@ public class Vagon extends UniqueEntity {
     private String serialNumber;
 
     @ManyToOne
-    private CargoType cargoType;
+    private Cargo cargo;
 
     private boolean isEmpty;
-
-    public Vagon (UUID uuid){super (uuid);}
 
 }
