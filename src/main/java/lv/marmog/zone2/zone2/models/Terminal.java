@@ -1,3 +1,4 @@
+/*
 package lv.marmog.zone2.zone2.models;
 
 
@@ -6,10 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -23,4 +22,9 @@ public class Terminal {
     private Integer idterminal;
 
     private String name;
+
+    @OneToMany(mappedBy = "terminal",
+    cascade = CascadeType.ALL)
+    private List<Train> trains;
 }
+*/

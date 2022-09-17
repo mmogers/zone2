@@ -1,3 +1,4 @@
+/*
 package lv.marmog.zone2.zone2.models.Inputs;
 
 import lombok.Getter;
@@ -10,5 +11,6 @@ import lombok.Setter;
 @Setter
 public class CountryInput {
     @NonNull
-    String name;
+    private String name;
 }
+*/

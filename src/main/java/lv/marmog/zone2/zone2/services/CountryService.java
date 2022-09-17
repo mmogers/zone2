@@ -1,6 +1,7 @@
+/*
 package lv.marmog.zone2.zone2.services;
 
-import lv.marmog.zone2.zone2.models.Country;
+import lv.marmog.zone2.zone2.models.Book;
 import lv.marmog.zone2.zone2.models.Inputs.CountryInput;
 import lv.marmog.zone2.zone2.repositories.CountryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +21,9 @@ public class CountryService {
 
     public void addCountry (String name){
         if (!countryRepository.existsByCountryName(name)){
-            Country country = new Country(name);
-             countryRepository.save(country);
+            Book book = new Book(name);
+             countryRepository.save(book);
         }
     }
 }
+*/

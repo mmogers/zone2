@@ -1,3 +1,4 @@
+/*
 package lv.marmog.zone2.zone2.models;
 
 import lombok.Getter;
@@ -7,7 +8,6 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -19,10 +19,10 @@ public class Train {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idtrain;
+    private Integer idtrain;
 
 
-    private Integer numberOfVagons;
+    private Integer numberOfWagons;
 
     @ManyToOne
     private Country destination;
@@ -32,11 +32,14 @@ public class Train {
 
     private String serialNumber;
 
-    /*@OneToMany(
-            mappedBy = "vagon",
+    @OneToMany(
+            mappedBy = "train",
             cascade = CascadeType.ALL
-    )*/
-    //private List <Vagon> vagons;
+    )
+    private List <Wagon> wagons;
 
+    @ManyToOne
+    private Terminal terminal;
     public Train (String serialNumber) {this.serialNumber = serialNumber;}
 }
+*/
