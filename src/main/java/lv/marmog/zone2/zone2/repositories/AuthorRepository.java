@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 
 @Repository
-public interface AuthorRepository extends CrudRepository<Author, Integer> , JpaRepository<Author, Integer> {
+public interface AuthorRepository extends JpaRepository<Author, Integer> {
 
 
 }

@@ -1,16 +1,17 @@
 package lv.marmog.zone2.zone2.services.interfaces;
 
+import lv.marmog.zone2.zone2.DTO.AuthorDTO;
 import lv.marmog.zone2.zone2.models.Author;
 
 import java.util.List;
 
 public interface AuthorService {
 
-    public Author addAuthor(Author author);
+    public AuthorDTO addAuthor(AuthorDTO author);
 
-    public List<Author> getAuthors();
+    public List<AuthorDTO> getAuthors();
 
-    public Author getAuthorById(Integer authorId);
+    public AuthorDTO getAuthorById(Integer authorId);
 
     public void deleteAuthor(Integer authorId);
 

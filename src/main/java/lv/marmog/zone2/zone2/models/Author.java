@@ -8,6 +8,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Getter
 @Setter
@@ -16,7 +17,7 @@ import javax.persistence.*;
 @JsonIgnoreProperties({"hibernateLazyInitializer"})
 @Entity
 @Table (name = "author_details")
-public class Author {
+public class Author implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
