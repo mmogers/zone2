@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static ch.qos.logback.core.joran.spi.ConsoleTarget.findByName;
 
 @Service
 public class AuthorServiceImpl implements AuthorService {
@@ -25,6 +24,11 @@ public class AuthorServiceImpl implements AuthorService {
     @Autowired
     private AuthorMapper mapper;
 
+    /**
+     *
+     * @param authorDTO
+     * @return
+     */
     @Override
     public AuthorDTO addAuthor(AuthorDTO authorDTO) {
         Author author = mapper.DTOToEntity(authorDTO);
@@ -35,6 +39,10 @@ public class AuthorServiceImpl implements AuthorService {
         return mapper.entityToDTO(author);
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public List<AuthorDTO> getAuthors() {
         List<Author> authors = authorRepository.findAll();
@@ -43,6 +51,11 @@ public class AuthorServiceImpl implements AuthorService {
         return authorsDTO;
     }
 
+    /**
+     *
+     * @param authorId
+     * @return
+     */
     @Override
     public AuthorDTO getAuthorById(Integer authorId) {
 
@@ -55,7 +68,10 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
 
-
+    /**
+     *
+     * @param authorId
+     */
     @Override
     public void deleteAuthor(Integer authorId) {
         if(authorRepository.existsById(authorId)){
@@ -66,6 +82,11 @@ public class AuthorServiceImpl implements AuthorService {
         }
     }
 
+    /**
+     *
+     * @param authorName
+     * @return
+     */
     @Override
     public List<AuthorDTO> getAuthorByName(String authorName){
         List<Author> authorsWithTheName = authorRepository.findByName(authorName);

@@ -1,7 +1,5 @@
 package lv.marmog.zone2.zone2.models.errors;
 
-import lv.marmog.zone2.zone2.models.Author;
-
 public class AuthorNotFoundException extends Error{
 
     Integer authorId;

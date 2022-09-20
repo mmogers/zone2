@@ -36,18 +36,18 @@ public class AuthorController {
         AuthorDTO authorDTO = authorService.getAuthorById(id);
 
         if (authorDTO != null) {
-            return new ResponseEntity<AuthorDTO>(authorDTO, HttpStatus.OK);
+            return new ResponseEntity<>(authorDTO, HttpStatus.OK);
         }
 
-        return new ResponseEntity<AuthorDTO>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PostMapping("/author-create")
     public ResponseEntity<AuthorDTO> createNewAuthor(@RequestBody AuthorDTO authorDTO) {
         try {
-            return new ResponseEntity<AuthorDTO>(authorService.addAuthor(authorDTO), HttpStatus.CREATED);
+            return new ResponseEntity<>(authorService.addAuthor(authorDTO), HttpStatus.CREATED);
         } catch (Exception e) {
-            return new ResponseEntity<AuthorDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -60,9 +60,9 @@ public class AuthorController {
 
             authorToUpdate.setAuthorName(authorDTO.getAuthorName());
 
-            return new ResponseEntity<AuthorDTO>(authorService.addAuthor(authorToUpdate), HttpStatus.OK);
+            return new ResponseEntity<>(authorService.addAuthor(authorToUpdate), HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<AuthorDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

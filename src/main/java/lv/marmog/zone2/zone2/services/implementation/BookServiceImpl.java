@@ -32,6 +32,11 @@ public class BookServiceImpl implements BookService {
     @Autowired
     private AuthorMapper authorMapper;
 
+    /**
+     *
+     * @param book
+     * @return
+     */
     @Override
     public BookDTO addBook(BookDTO book) {
 
@@ -50,6 +55,10 @@ public class BookServiceImpl implements BookService {
 
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public List<BookDTO> getBooks() {
         List<Book> books = bookRepository.findAll();
@@ -60,6 +69,11 @@ public class BookServiceImpl implements BookService {
         return booksDTO;
     }
 
+    /**
+     *
+     * @param BookId
+     * @return
+     */
     @Override
     public BookDTO getBookById(Integer BookId) {
 
@@ -73,6 +87,12 @@ public class BookServiceImpl implements BookService {
 
     }
 
+    /**
+     *
+     * @param book
+     * @param bookId
+     * @return
+     */
     @Override
     public BookDTO updateBook(BookDTO book, Integer bookId) {
 
@@ -94,6 +114,10 @@ public class BookServiceImpl implements BookService {
         return existingBook;
     }
 
+    /**
+     *
+     * @param bookId
+     */
     @Override
     public void deleteBook(Integer bookId) {
         if (getBookById(bookId) != null) {
@@ -107,5 +131,13 @@ public class BookServiceImpl implements BookService {
         else {
             throw new BookNotFoundException(bookId);
         }
+    }
+    @Override
+        public List<BookDTO> getBooksByName(String name){
+        List<Book> books=  bookRepository.getBooksByName(name).orElseThrow();
+        List <BookDTO> booksToReturn = books.stream().map(book -> mapper.entityToDTO(book)).collect(Collectors.toList());
+        return booksToReturn;
+
+
     }
 }

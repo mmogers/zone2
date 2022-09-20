@@ -39,10 +39,10 @@ public class BookController {
         BookDTO book = bookService.getBookById(id);
 
         if (book != null) {
-            return new ResponseEntity<BookDTO>(book, HttpStatus.OK);
+            return new ResponseEntity<>(book, HttpStatus.OK);
         }
 
-        return new ResponseEntity<BookDTO>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PostMapping("/book-create")
@@ -52,17 +52,17 @@ public class BookController {
             BookDTO bookSaved = bookService.addBook(book);
 
             if (bookSaved != null) {
-                return new ResponseEntity<BookDTO>(bookSaved, HttpStatus.CREATED);
+                return new ResponseEntity<>(bookSaved, HttpStatus.CREATED);
             }
 
-            return new ResponseEntity<BookDTO>(HttpStatus.CONFLICT);
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         } catch (HttpClientErrorException e) {
             e.printStackTrace();
-            return new ResponseEntity<BookDTO>(HttpStatus.CONFLICT);
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
         catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<BookDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -72,8 +72,6 @@ public class BookController {
 
         try {
             bookUpdated = bookService.updateBook(bookDTO, id);
-        } catch (NullPointerException e1) {
-            e1.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -87,6 +85,21 @@ public class BookController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/books-by-author")
+    public ResponseEntity<List<BookDTO>> getBooksByAuthor(@RequestParam String name) {
+        try {
+            List<BookDTO> books = bookService.getBooksByName(name);
+
+            if ( books.size() == 0) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+
+            return new ResponseEntity<>(books, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

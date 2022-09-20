@@ -16,4 +16,6 @@ public interface BookService {
 
     public void deleteBook(Integer id);
 
+    public List<BookDTO> getBooksByName(String name);
+
 }

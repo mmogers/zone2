@@ -28,7 +28,7 @@ public class Book {
     @Column(name = "added_on", nullable = false, updatable = false)
     private Date addedOn;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "author_of_book")
     private Author author;
 
