@@ -15,4 +15,7 @@ public interface AuthorService {
 
     public void deleteAuthor(Integer authorId);
 
+    public List<AuthorDTO> getAuthorByName (String authorName);
+
+
 }

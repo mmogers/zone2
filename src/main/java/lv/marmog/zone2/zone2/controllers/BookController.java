@@ -19,12 +19,12 @@ public class BookController {
     @Autowired
     private BookService bookService;
 
-    @GetMapping("/book")
+    @GetMapping("/books")
     public ResponseEntity<List<BookDTO>> getAllBooks() {
         try {
             List<BookDTO> books = bookService.getBooks();
 
-            if (books.isEmpty() || books.size() == 0) {
+            if ( books.size() == 0) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
 
@@ -45,13 +45,12 @@ public class BookController {
         return new ResponseEntity<BookDTO>(HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping("/add-book")
+    @PostMapping("/book-create")
     @ExceptionHandler(HttpClientErrorException.class)
-    public ResponseEntity<BookDTO> saveBook(@Valid @RequestBody BookDTO book) {
+    public ResponseEntity<BookDTO> createNewBook(@Valid @RequestBody BookDTO book) {
         try {
             BookDTO bookSaved = bookService.addBook(book);
 
-            //if book created
             if (bookSaved != null) {
                 return new ResponseEntity<BookDTO>(bookSaved, HttpStatus.CREATED);
             }

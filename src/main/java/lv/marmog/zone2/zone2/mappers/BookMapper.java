@@ -1,6 +1,5 @@
 package lv.marmog.zone2.zone2.mappers;
 
-import lv.marmog.zone2.zone2.DTO.AuthorDTO;
 import lv.marmog.zone2.zone2.DTO.BookDTO;
 import lv.marmog.zone2.zone2.models.Author;
 import lv.marmog.zone2.zone2.models.Book;
@@ -11,14 +10,13 @@ public class BookMapper {
 
     public BookDTO entityToDTO(Book book) {
         BookDTO bookDTO = new BookDTO();
-        bookDTO.setAuthorId(book.getAuthor().getAuthorId());
+        bookDTO.setAuthor(book.getAuthor());
         bookDTO.setBookCode(book.getBookCode());
         bookDTO.setBookName(book.getBookName());
         bookDTO.setAddedOn(book.getAddedOn());
         return bookDTO;
     }
 
-    // mapper method for DTO to Entity
 
     public Book DTOToEntity(BookDTO bookDTO, Author author) {
         Book book = new Book();

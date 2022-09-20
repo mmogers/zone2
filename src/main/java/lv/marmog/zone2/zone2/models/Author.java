@@ -27,10 +27,6 @@ public class Author implements Serializable {
     @Column(name = "author_name")
     private String authorName;
 
-   /* @ManyToOne
-    private Country countyOfOrigin;
-*/
-    //public Author(String name) { this.cargoType = cargoType; }
    public Author(Integer authorId, String authorName) {
        super();
        this.authorId = authorId;

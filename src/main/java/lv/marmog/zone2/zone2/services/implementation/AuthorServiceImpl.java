@@ -3,15 +3,18 @@ package lv.marmog.zone2.zone2.services.implementation;
 import lv.marmog.zone2.zone2.DTO.AuthorDTO;
 import lv.marmog.zone2.zone2.mappers.AuthorMapper;
 import lv.marmog.zone2.zone2.models.Author;
+import lv.marmog.zone2.zone2.models.errors.AuthorAlreadyExistException;
+import lv.marmog.zone2.zone2.models.errors.AuthorNotFoundException;
 import lv.marmog.zone2.zone2.repositories.AuthorRepository;
 import lv.marmog.zone2.zone2.services.interfaces.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static ch.qos.logback.core.joran.spi.ConsoleTarget.findByName;
 
 @Service
 public class AuthorServiceImpl implements AuthorService {
@@ -25,6 +28,9 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public AuthorDTO addAuthor(AuthorDTO authorDTO) {
         Author author = mapper.DTOToEntity(authorDTO);
+        if(authorRepository.existsByAuthorName(authorDTO.getAuthorName())){
+            throw new AuthorAlreadyExistException(author);
+        }
         authorRepository.save(author);
         return mapper.entityToDTO(author);
     }
@@ -39,14 +45,16 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public AuthorDTO getAuthorById(Integer authorId) {
-        AuthorDTO authorDTO = null;
-        Optional<Author> foundBook = authorRepository.findById(authorId);
-        if(foundBook.isEmpty()){
-            throw new NoSuchElementException();
+
+        Optional<Author> foundAuthor = authorRepository.findById(authorId);
+        if(foundAuthor.isEmpty()){
+            throw new AuthorNotFoundException(authorId);
         }
 
-        return mapper.entityToDTO(foundBook.get());
+        return mapper.entityToDTO(foundAuthor.get());
     }
+
+
 
     @Override
     public void deleteAuthor(Integer authorId) {
@@ -54,7 +62,14 @@ public class AuthorServiceImpl implements AuthorService {
             authorRepository.deleteById(authorId);
         }
         else{
-            throw new NoSuchElementException();
+            throw new AuthorNotFoundException(authorId);
         }
+    }
+
+    @Override
+    public List<AuthorDTO> getAuthorByName(String authorName){
+        List<Author> authorsWithTheName = authorRepository.findByName(authorName);
+        List<AuthorDTO> authorsToReturn = authorsWithTheName.stream().map(author -> mapper.entityToDTO(author)).collect(Collectors.toList());
+        return authorsToReturn;
     }
 }
