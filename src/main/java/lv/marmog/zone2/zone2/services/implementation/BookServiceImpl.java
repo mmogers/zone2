@@ -1,6 +1,7 @@
 package lv.marmog.zone2.zone2.services.implementation;
 
 
+
 import lv.marmog.zone2.zone2.DTO.BookDTO;
 import lv.marmog.zone2.zone2.mappers.BookMapper;
 import lv.marmog.zone2.zone2.models.Book;
@@ -11,113 +12,80 @@ import lv.marmog.zone2.zone2.services.interfaces.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class BookServiceImpl implements BookService {
 
     @Autowired
-    private BookRepository bookRepository;
+    BookRepository bookRepository;
 
     @Autowired
-    private BookMapper mapper;
+    BookMapper mapper;
 
-    /**
-     *
-     * @param book
-     * @return
-     */
+
     @Override
     public BookDTO addBook(BookDTO book) {
 
-        if (getBookById(book.getBookCode()) == null) {
-
-
-            Book bookToSave = mapper.DTOToBook(book);
-
-            bookRepository.save(bookToSave);
-
-            return mapper.BookToDTO(bookToSave);
-        } else {
+        if (bookRepository.existsByBookCode(book.getBookCode())){
             throw new BookAlreadyExistsException(book.getBookCode());
         }
 
-    }
+            Book bookToSave = mapper.DTOToBook(book);
+            Date date = new Date();
+            bookToSave.setAddedOn(date);
+            bookRepository.save(bookToSave);
 
-    /**
-     *
-     * @return
-     */
+            return mapper.BookToDTO(bookToSave);
+
+        }
+
     @Override
     public List<BookDTO> getBooks() {
         List<Book> books = bookRepository.findAll();
         List<BookDTO> booksDTO = books.stream()
-                .map(book -> mapper.BookToDTO(book))
+                .map(mapper::BookToDTO)
                 .collect(Collectors.toList());
 
         return booksDTO;
     }
 
-    /**
-     *
-     * @param BookId
-     * @return
-     */
+
     @Override
-    public BookDTO getBookById(Integer BookId) {
+    public BookDTO getBookByCode(Integer bookCode) {
 
-            Optional<Book> book = bookRepository.findById(BookId);
+            Book book = bookRepository.getBookByCode(bookCode).orElseThrow(()->new BookNotFoundException(bookCode));
 
-            if (book.isPresent()) {
-                return mapper.BookToDTO(book.get());
-            } else {
-                return null;
-            }
+            return  mapper.BookToDTO(book);
 
     }
 
-    /**
-     *
-     * @param book
-     * @param bookId
-     * @return
-     */
+
     @Override
-    public BookDTO updateBook(BookDTO book, Integer bookId) {
+    public BookDTO updateBook(BookDTO book, Integer bookCode) {
 
-        BookDTO existingBook = getBookById(bookId);
+        Book updateBook = bookRepository.getBookByCode(bookCode).orElseThrow(()-> new BookNotFoundException(bookCode));
 
-        if (existingBook != null) {
+        updateBook.setBookName(book.getBookName());
+        updateBook.setAuthor(book.getAuthor());
+        updateBook.setLocation(book.getLocation());
+        updateBook.setIsRead(book.getIsRead());
 
-            existingBook.setBookName(book.getBookName());
-            existingBook.setAuthor(book.getAuthor());
+        BookDTO returnBook = mapper.BookToDTO(updateBook);
 
-            Book bookToSave = mapper.DTOToBook(existingBook);
-
-            bookRepository.save(bookToSave);
-
-            existingBook = mapper.BookToDTO(bookToSave);
-        }
-        return existingBook;
+        bookRepository.save(updateBook);
+        return returnBook;
     }
 
-    /**
-     *
-     * @param bookId
-     */
     @Override
-    public void deleteBook(Integer bookId) {
-        if (getBookById(bookId) != null) {
+    public void deleteBook(Integer bookCode) {
 
-            BookDTO book = getBookById(bookId);
+     Book book = bookRepository.getBookByCode(bookCode).orElseThrow( ()-> new BookNotFoundException(bookCode));
 
-            bookRepository.delete(mapper.DTOToBook(getBookById(bookId)));
-        }
-        else {
-            throw new BookNotFoundException(bookId);
-        }
+     bookRepository.delete(book);
+
     }
     @Override
         public List<BookDTO> getBooksByName(String name){
@@ -125,5 +93,21 @@ public class BookServiceImpl implements BookService {
         List <BookDTO> booksToReturn = books.stream().map(book -> mapper.BookToDTO(book)).collect(Collectors.toList());
         return booksToReturn;
 
+    }
+
+    @Override
+    public void setBookAsRead(Integer bookCode) {
+        BookDTO existingBook = getBookByCode(bookCode);
+
+        if (existingBook != null) {
+
+            Book bookToSave = mapper.DTOToBook(existingBook);
+            bookToSave.setIsRead(true);
+
+            bookRepository.save(bookToSave);
+
+        } else{
+            throw new BookNotFoundException(bookCode);
+        }
     }
 }

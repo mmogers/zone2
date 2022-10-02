@@ -13,7 +13,8 @@ public class BookMapper {
         bookDTO.setAuthor(book.getAuthor());
         bookDTO.setBookCode(book.getBookCode());
         bookDTO.setBookName(book.getBookName());
-        bookDTO.setAddedOn(book.getAddedOn());
+        bookDTO.setLocation(book.getLocation());
+        bookDTO.setIsRead(book.getIsRead());
         return bookDTO;
     }
 
@@ -23,7 +24,8 @@ public class BookMapper {
         book.setAuthor(bookDTO.getAuthor());
         book.setBookCode(bookDTO.getBookCode());
         book.setBookName(bookDTO.getBookName());
-        book.setAddedOn(bookDTO.getAddedOn());
+        book.setLocation(bookDTO.getLocation());
+        book.setIsRead(bookDTO.getIsRead());
         return book;
     }
 }

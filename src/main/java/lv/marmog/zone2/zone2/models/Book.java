@@ -1,11 +1,8 @@
 package lv.marmog.zone2.zone2.models;
 
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import lombok.Setter;
-import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -15,6 +12,7 @@ import java.util.Date;
 @Setter
 @ToString(callSuper = true)
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "book_details")
 public class Book {
@@ -31,14 +29,14 @@ public class Book {
     @CreationTimestamp
     @Column(name = "added_on", nullable = false, updatable = false)
     private Date addedOn;
+
     @Column(name = "author_of_book")
     private String author;
 
-    public Book(Integer bookCode, String bookName, Date addedOn, String author) {
-        super();
-        this.bookCode = bookCode;
-        this.bookName = bookName;
-        this.addedOn = addedOn;
-        this.author = author;
-    }
+    @Column(name="is_read")
+    private Boolean isRead;
+
+    @Column(name="location")
+    private String location;
+
 }

@@ -1,9 +1,6 @@
 package lv.marmog.zone2.zone2.DTO;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 
 import java.util.Date;
@@ -12,22 +9,17 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @ToString
+@AllArgsConstructor
 public class BookDTO {
 
     private Integer bookCode;
 
     public String bookName;
 
-    private Date addedOn;
-
     private String author;
 
-    public BookDTO(Integer bookCode, String bookName, Date addedOn, String author) {
-        super();
-        this.bookCode = bookCode;
-        this.bookName = bookName;
-        this.addedOn = addedOn;
-        this.author = author;
-    }
+    private String location;
+
+    private Boolean isRead;
 
 }

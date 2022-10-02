@@ -10,7 +10,7 @@ public interface BookService {
 
     public List<BookDTO> getBooks();
 
-    public BookDTO getBookById(Integer id);
+    public BookDTO getBookByCode(Integer code);
 
     public BookDTO updateBook(BookDTO book, Integer id);
 
@@ -18,4 +18,5 @@ public interface BookService {
 
     public List<BookDTO> getBooksByName(String name);
 
+    public void setBookAsRead(Integer bookCode);
 }

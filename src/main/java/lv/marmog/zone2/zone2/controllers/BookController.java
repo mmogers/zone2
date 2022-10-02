@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @RestController
@@ -36,7 +36,7 @@ public class BookController {
 
     @GetMapping("/book/{id}")
     public ResponseEntity<BookDTO> getBook(@Valid @PathVariable Integer id) {
-        BookDTO book = bookService.getBookById(id);
+        BookDTO book = bookService.getBookByCode(id);
 
         if (book != null) {
             return new ResponseEntity<>(book, HttpStatus.OK);
@@ -66,29 +66,25 @@ public class BookController {
         }
     }
 
-    @PutMapping("/book/{id}")
-    public BookDTO updateBook(@Valid @RequestBody BookDTO bookDTO, @PathVariable @Min(1) Integer id) {
-        BookDTO bookUpdated = null;
+    @PutMapping("/book/{bookCode}")
+    public ResponseEntity<BookDTO> updateBook(@Valid @RequestBody BookDTO bookDTO, @PathVariable @NotNull Integer bookCode) {
 
-        try {
-            bookUpdated = bookService.updateBook(bookDTO, id);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return bookUpdated;
+        BookDTO book = bookService.updateBook(bookDTO, bookCode);
+
+        return ResponseEntity.ok(book);
     }
 
-    @DeleteMapping("/book/{id}")
-    public ResponseEntity<Book> deleteBook(@PathVariable @Min(1) Integer id) {
+    @DeleteMapping("/book/{bookCode}")
+    public ResponseEntity<Book> deleteBook(@PathVariable @NotNull Integer bookCode) {
         try {
-            bookService.deleteBook(id);
+            bookService.deleteBook(bookCode);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    /*@GetMapping("/books-by-author")
+    @GetMapping("/books-by-author")
     public ResponseEntity<List<BookDTO>> getBooksByAuthor(@RequestParam String name) {
         try {
             List<BookDTO> books = bookService.getBooksByName(name);
@@ -96,12 +92,11 @@ public class BookController {
             if ( books.size() == 0) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
-
             return new ResponseEntity<>(books, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }*/
+    }
 
 
 }

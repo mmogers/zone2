@@ -17,4 +17,16 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
                     "WHERE b.author LIKE %:name%"
     )
     Optional<List<Book>> getBooksByName(String name);
+
+    @Query(
+            "SELECT b FROM Book b " +
+                    "WHERE b.bookCode = :bookCode"
+    )
+    Optional<Book> getBookByCode(Integer bookCode);
+    @Query(
+            "SELECT b FROM Book b "
+    )
+    List<Book> findAll();
+
+    boolean existsByBookCode(Integer bookCode);
 }
