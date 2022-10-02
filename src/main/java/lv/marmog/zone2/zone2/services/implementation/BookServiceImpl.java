@@ -1,14 +1,12 @@
 package lv.marmog.zone2.zone2.services.implementation;
 
-import lv.marmog.zone2.zone2.DTO.AuthorDTO;
+
 import lv.marmog.zone2.zone2.DTO.BookDTO;
-import lv.marmog.zone2.zone2.mappers.AuthorMapper;
 import lv.marmog.zone2.zone2.mappers.BookMapper;
 import lv.marmog.zone2.zone2.models.Book;
 import lv.marmog.zone2.zone2.models.errors.BookAlreadyExistsException;
 import lv.marmog.zone2.zone2.models.errors.BookNotFoundException;
 import lv.marmog.zone2.zone2.repositories.BookRepository;
-import lv.marmog.zone2.zone2.services.interfaces.AuthorService;
 import lv.marmog.zone2.zone2.services.interfaces.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,13 +22,7 @@ public class BookServiceImpl implements BookService {
     private BookRepository bookRepository;
 
     @Autowired
-    private AuthorService authorService;
-
-    @Autowired
     private BookMapper mapper;
-
-    @Autowired
-    private AuthorMapper authorMapper;
 
     /**
      *
@@ -42,13 +34,12 @@ public class BookServiceImpl implements BookService {
 
         if (getBookById(book.getBookCode()) == null) {
 
-            AuthorDTO authorDTO = authorService.getAuthorById(book.getAuthor().getAuthorId());
 
-            Book bookToSave = mapper.DTOToEntity(book, authorMapper.DTOToEntity(authorDTO));
+            Book bookToSave = mapper.DTOToBook(book);
 
             bookRepository.save(bookToSave);
 
-            return mapper.entityToDTO(bookToSave);
+            return mapper.BookToDTO(bookToSave);
         } else {
             throw new BookAlreadyExistsException(book.getBookCode());
         }
@@ -63,7 +54,7 @@ public class BookServiceImpl implements BookService {
     public List<BookDTO> getBooks() {
         List<Book> books = bookRepository.findAll();
         List<BookDTO> booksDTO = books.stream()
-                .map(book -> mapper.entityToDTO(book))
+                .map(book -> mapper.BookToDTO(book))
                 .collect(Collectors.toList());
 
         return booksDTO;
@@ -80,7 +71,7 @@ public class BookServiceImpl implements BookService {
             Optional<Book> book = bookRepository.findById(BookId);
 
             if (book.isPresent()) {
-                return mapper.entityToDTO(book.get());
+                return mapper.BookToDTO(book.get());
             } else {
                 return null;
             }
@@ -103,13 +94,11 @@ public class BookServiceImpl implements BookService {
             existingBook.setBookName(book.getBookName());
             existingBook.setAuthor(book.getAuthor());
 
-            AuthorDTO authorDTO = authorService.getAuthorById(existingBook.getAuthor().getAuthorId());
-
-            Book bookToSave = mapper.DTOToEntity(existingBook, authorMapper.DTOToEntity(authorDTO));
+            Book bookToSave = mapper.DTOToBook(existingBook);
 
             bookRepository.save(bookToSave);
 
-            existingBook = mapper.entityToDTO(bookToSave);
+            existingBook = mapper.BookToDTO(bookToSave);
         }
         return existingBook;
     }
@@ -124,9 +113,7 @@ public class BookServiceImpl implements BookService {
 
             BookDTO book = getBookById(bookId);
 
-            AuthorDTO authorDTO = authorService.getAuthorById(book.getAuthor().getAuthorId());
-
-            bookRepository.delete(mapper.DTOToEntity(getBookById(bookId), authorMapper.DTOToEntity(authorDTO)));
+            bookRepository.delete(mapper.DTOToBook(getBookById(bookId)));
         }
         else {
             throw new BookNotFoundException(bookId);
@@ -135,9 +122,8 @@ public class BookServiceImpl implements BookService {
     @Override
         public List<BookDTO> getBooksByName(String name){
         List<Book> books=  bookRepository.getBooksByName(name).orElseThrow();
-        List <BookDTO> booksToReturn = books.stream().map(book -> mapper.entityToDTO(book)).collect(Collectors.toList());
+        List <BookDTO> booksToReturn = books.stream().map(book -> mapper.BookToDTO(book)).collect(Collectors.toList());
         return booksToReturn;
-
 
     }
 }

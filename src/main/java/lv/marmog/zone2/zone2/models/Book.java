@@ -19,6 +19,10 @@ import java.util.Date;
 @Table(name = "book_details")
 public class Book {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @Column(name="book_code")
     private Integer bookCode;
 
     @Column(name = "book_name")
@@ -27,12 +31,10 @@ public class Book {
     @CreationTimestamp
     @Column(name = "added_on", nullable = false, updatable = false)
     private Date addedOn;
+    @Column(name = "author_of_book")
+    private String author;
 
-    @ManyToOne
-    @JoinColumn(name = "author_of_book")
-    private Author author;
-
-    public Book(Integer bookCode, String bookName, Date addedOn, Author author) {
+    public Book(Integer bookCode, String bookName, Date addedOn, String author) {
         super();
         this.bookCode = bookCode;
         this.bookName = bookName;

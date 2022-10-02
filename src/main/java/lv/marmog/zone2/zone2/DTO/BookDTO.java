@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import lv.marmog.zone2.zone2.models.Author;
+
 
 import java.util.Date;
 
@@ -20,9 +20,9 @@ public class BookDTO {
 
     private Date addedOn;
 
-    private Author author;
+    private String author;
 
-    public BookDTO(Integer bookCode, String bookName, Date addedOn, Author author) {
+    public BookDTO(Integer bookCode, String bookName, Date addedOn, String author) {
         super();
         this.bookCode = bookCode;
         this.bookName = bookName;

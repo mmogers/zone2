@@ -88,7 +88,7 @@ public class BookController {
         }
     }
 
-    @GetMapping("/books-by-author")
+    /*@GetMapping("/books-by-author")
     public ResponseEntity<List<BookDTO>> getBooksByAuthor(@RequestParam String name) {
         try {
             List<BookDTO> books = bookService.getBooksByName(name);
@@ -101,7 +101,7 @@ public class BookController {
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
+    }*/
 
 
 }
