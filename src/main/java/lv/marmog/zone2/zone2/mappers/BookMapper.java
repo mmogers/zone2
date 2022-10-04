@@ -2,13 +2,14 @@ package lv.marmog.zone2.zone2.mappers;
 
 import lv.marmog.zone2.zone2.DTO.BookDTO;
 
+import lv.marmog.zone2.zone2.mappers.mapperInterface.BookMapperInterface;
 import lv.marmog.zone2.zone2.models.Book;
 import org.springframework.stereotype.Service;
 
 @Service
-public class BookMapper {
+public class BookMapper implements BookMapperInterface {
 
-    public BookDTO BookToDTO(Book book) {
+    public BookDTO BookToDTO(Book book)  {
         BookDTO bookDTO = new BookDTO();
         bookDTO.setAuthor(book.getAuthor());
         bookDTO.setBookCode(book.getBookCode());
