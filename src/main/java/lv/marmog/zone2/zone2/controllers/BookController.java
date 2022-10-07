@@ -58,11 +58,11 @@ public class BookController {
 
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         } catch (HttpClientErrorException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
         catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

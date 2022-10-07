@@ -2,9 +2,6 @@ package lv.marmog.zone2.zone2.DTO;
 
 import lombok.*;
 
-
-import java.util.Date;
-
 @Getter
 @Setter
 @NoArgsConstructor

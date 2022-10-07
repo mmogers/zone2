@@ -1,15 +1,12 @@
 package lv.marmog.zone2.zone2.models.errors;
 
 
-import lombok.Getter;
-import lombok.Setter;
 
-@Setter
-@Getter
-public class BookNotFound extends Error{
+public class BookNotFound extends RuntimeException{
 
-    private Integer bookCode;
-    private  String bookName;
+    Integer bookCode;
+
+    String bookName;
 
     public BookNotFound(Integer bookCode) {
         super("The book with this id was not found : " + bookCode);

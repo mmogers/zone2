@@ -5,7 +5,7 @@ package lv.marmog.zone2.zone2.services.implementation;
 import lv.marmog.zone2.zone2.DTO.BookDTO;
 import lv.marmog.zone2.zone2.mappers.BookMapper;
 import lv.marmog.zone2.zone2.models.Book;
-import lv.marmog.zone2.zone2.models.errors.BookAlreadyExistsException;
+import lv.marmog.zone2.zone2.models.errors.BookAlreadyExists;
 import lv.marmog.zone2.zone2.models.errors.BookNotFound;
 import lv.marmog.zone2.zone2.repositories.BookRepository;
 import lv.marmog.zone2.zone2.services.interfaces.BookService;
@@ -30,7 +30,7 @@ public class BookServiceImpl implements BookService {
     public BookDTO addBook(BookDTO book) {
 
         if (bookRepository.existsByBookCode(book.getBookCode())){
-            throw new BookAlreadyExistsException(book.getBookCode());
+            throw new BookAlreadyExists(book.getBookCode());
         }
             Book bookToSave = mapper.DTOToBook(book);
             Date date = new Date();

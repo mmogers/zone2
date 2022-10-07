@@ -3,7 +3,7 @@ package lv.marmog.zone2.zone2.services.implementation;
 import lv.marmog.zone2.zone2.DTO.BookDTO;
 import lv.marmog.zone2.zone2.mappers.BookMapper;
 import lv.marmog.zone2.zone2.models.Book;
-import lv.marmog.zone2.zone2.models.errors.BookAlreadyExistsException;
+import lv.marmog.zone2.zone2.models.errors.BookAlreadyExists;
 import lv.marmog.zone2.zone2.models.errors.BookNotFound;
 import lv.marmog.zone2.zone2.repositories.BookRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -71,7 +71,7 @@ class BookServiceTest {
     @Test
     void addBookAlreadyExistsTest() {
         when(bookRepository.existsByBookCode(anyInt())).thenReturn(true);
-        assertThrows(BookAlreadyExistsException.class, ()-> bookService.addBook(bookDTO));
+        assertThrows(BookAlreadyExists.class, ()-> bookService.addBook(bookDTO));
         verify(bookRepository, times(1)).existsByBookCode(anyInt());
     }
 
