@@ -41,17 +41,17 @@ class BookControllerTest {
     }
 
 
-    @Test
+   /* @Test
     void getAllBooks() {
-    }
+    }*/
 
-    @Test
+    /*@Test
     void getBook() {
-    }
+    }*/
 
-    @Test
+    /*@Test
     void createNewBook() {
-    }
+    }*/
 
     @Test
     void updateBook() throws Exception {
@@ -70,11 +70,11 @@ class BookControllerTest {
                 .string("{\"bookCode\":null,\"bookName\":null,\"author\":null,\"location\":null,\"isRead\":null}"));
     }
 
-    @Test
+    /*@Test
     void deleteBook() {
-    }
+    }*/
 
-    @Test
+    /*@Test
     void getBooksByAuthor() {
-    }
+    }*/
 }
