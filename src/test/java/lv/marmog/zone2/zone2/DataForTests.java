@@ -1,3 +1,4 @@
+/*
 package lv.marmog.zone2.zone2;
 
 import lv.marmog.zone2.zone2.DTO.BookDTO;
@@ -34,3 +35,4 @@ public class DataForTests {
         return bookDTO;
     }
 }
+*/
