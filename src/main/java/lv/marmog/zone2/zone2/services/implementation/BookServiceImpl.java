@@ -36,7 +36,7 @@ public class BookServiceImpl implements BookService {
             Date date = new Date();
             bookToSave.setAddedOn(date);
             bookRepository.save(bookToSave);
-            return mapper.BookToDTO(bookToSave);
+            return mapper.bookToDTO(bookToSave);
 
         }
 
@@ -44,7 +44,7 @@ public class BookServiceImpl implements BookService {
     public List<BookDTO> getBooks() {
         List<Book> books = bookRepository.findAll();
         return books.stream()
-                .map(mapper::BookToDTO)
+                .map(mapper::bookToDTO)
                 .collect(Collectors.toList());
 
     }
@@ -53,7 +53,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public BookDTO getBookByCode(Integer bookCode) {
             Book book = bookRepository.getBookByCode(bookCode).orElseThrow(()->new BookNotFound(bookCode));
-            return  mapper.BookToDTO(book);
+            return  mapper.bookToDTO(book);
     }
 
 
@@ -65,7 +65,7 @@ public class BookServiceImpl implements BookService {
         updateBook.setAuthor(book.getAuthor());
         updateBook.setLocation(book.getLocation());
         updateBook.setIsRead(book.getIsRead());
-        BookDTO returnBook = mapper.BookToDTO(updateBook);
+        BookDTO returnBook = mapper.bookToDTO(updateBook);
         bookRepository.save(updateBook);
         return returnBook;
     }
@@ -74,18 +74,17 @@ public class BookServiceImpl implements BookService {
     public void deleteBook(Integer bookCode) {
 
      Book book = bookRepository.getBookByCode(bookCode).orElseThrow( ()-> new BookNotFound(bookCode));
-
      bookRepository.delete(book);
 
     }
     @Override
         public List<BookDTO> getBooksByName(String bookName){
         List<Book> books=  bookRepository.getBooksByName(bookName).orElseThrow(()->new BookNotFound(bookName));
-        return books.stream().map(book -> mapper.BookToDTO(book)).collect(Collectors.toList());
+        return books.stream().map(book -> mapper.bookToDTO(book)).collect(Collectors.toList());
 
     }
 
-    @Override
+    /*@Override
     public void setBookAsRead(Integer bookCode) {
         BookDTO existingBook = getBookByCode(bookCode);
 
@@ -99,5 +98,5 @@ public class BookServiceImpl implements BookService {
         } else{
             throw new BookNotFound(bookCode);
         }
-    }
+    }*/
 }

@@ -1,5 +1,5 @@
 package lv.marmog.zone2.zone2.controllers;
-
+//hateoas
 import lv.marmog.zone2.zone2.DTO.BookDTO;
 import lv.marmog.zone2.zone2.models.Book;
 import lv.marmog.zone2.zone2.services.interfaces.BookService;
@@ -55,24 +55,18 @@ public class BookController {
             if (bookSaved != null) {
                 return new ResponseEntity<>(bookSaved, HttpStatus.CREATED);
             }
-
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         } catch (HttpClientErrorException e) {
-            //e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.CONFLICT);
-        }
-        catch (Exception e) {
-            //e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PutMapping("/book/{bookCode}")
     public ResponseEntity<BookDTO> updateBook(@Valid @RequestBody BookDTO bookDTO, @PathVariable @NotNull Integer bookCode) {
 
-        BookDTO book = bookService.updateBook(bookDTO, bookCode);
+        BookDTO updatedBookDTO = bookService.updateBook(bookDTO, bookCode);
 
-        return ResponseEntity.ok(book);
+        return ResponseEntity.ok(updatedBookDTO);
     }
 
     @DeleteMapping("/book/{bookCode}")
@@ -98,6 +92,5 @@ public class BookController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
 
 }

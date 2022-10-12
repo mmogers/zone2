@@ -15,11 +15,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import static lv.marmog.zone2.zone2.DataForTests.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -40,28 +41,6 @@ class BookServiceTest {
     BookMapper mapper;
 
 
-    private ArrayList<Book> bookList() {
-        ArrayList<Book> testList = new ArrayList<>();
-        Date date = new Date();
-        testList.add(new Book(1, 100, "Name1", date, "Author1", true, "home"));
-        testList.add(new Book(2, 200, "Name2", date, "Author2", false, "home"));
-        return testList;
-    }
-
-    private ArrayList<BookDTO> bookDTOList() {
-        ArrayList<BookDTO> testList = new ArrayList<>();
-        testList.add(new BookDTO(100, "Name1", "Author1", "home", true));
-        testList.add(new BookDTO(200, "Name2", "Author2", "home", false));
-        return testList;
-    }
-
-    Date date = new Date();
-    private Book book = new Book(1, 100, "Name1", date, "Author1", true, "home");
-    private Book anotherBook = new Book(1, 100, "Name1", date, "Author1", true, "home");
-
-    private BookDTO bookDTO = new BookDTO(100, "Name1", "Author1", "home", true);
-
-
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -70,6 +49,8 @@ class BookServiceTest {
 
     @Test
     void addBookAlreadyExistsTest() {
+        BookDTO bookDTO = bookDTO();
+
         when(bookRepository.existsByBookCode(anyInt())).thenReturn(true);
         assertThrows(BookAlreadyExists.class, ()-> bookService.addBook(bookDTO));
         verify(bookRepository, times(1)).existsByBookCode(anyInt());
@@ -77,60 +58,76 @@ class BookServiceTest {
 
     @Test
     void addBookTest() {
+        Book book = book();
+        BookDTO bookDTO = bookDTO();
+
         when(bookRepository.save((Book) any())).thenReturn(book);
         when(bookRepository.existsByBookCode(anyInt())).thenReturn(false);
-        when(mapper.BookToDTO((Book) any())).thenReturn(bookDTO);
+        when(mapper.bookToDTO((Book) any())).thenReturn(bookDTO);
         when(mapper.DTOToBook((BookDTO) any())).thenReturn(book);
         assertSame(bookDTO, bookService.addBook(new BookDTO()));
         verify(bookRepository).save((Book)any());
-        verify(mapper).BookToDTO((Book)any());
+        verify(mapper).bookToDTO((Book)any());
         verify(mapper).DTOToBook((BookDTO) any());
     }
 
     @Test
     void getBooksTest() {
+        List<Book> bookList = bookList();
+        BookDTO bookDTO = bookDTO();
 
         assertTrue(bookService.getBooks().isEmpty());
         when(bookRepository.findAll()).thenReturn(new ArrayList<>());
-        when(bookRepository.findAll()).thenReturn(bookList());
-        when(mapper.BookToDTO((Book)any())).thenReturn(bookDTO);
+        when(bookRepository.findAll()).thenReturn(bookList);
+        when(mapper.bookToDTO((Book)any())).thenReturn(bookDTO);
         verify(bookRepository).findAll();
     }
 
     @Test
     void getBookByCode() {
-
+        Book book = book();
+        BookDTO bookDTO = bookDTO();
 
         Optional<Book> result = Optional.of(book);
         when(bookRepository.getBookByCode(anyInt())).thenReturn(result); //Optional.of(book);
-        when(mapper.BookToDTO((Book)any())).thenReturn(bookDTO);
+        when(mapper.bookToDTO((Book)any())).thenReturn(bookDTO);
         assertSame(bookDTO, bookService.getBookByCode(100));
         verify(bookRepository, times(1)).getBookByCode(anyInt());
-        verify(mapper).BookToDTO(book);
+        verify(mapper).bookToDTO(book);
     }
 
     @Test
     void updateBookTest() {
+
+        Book book = book();
+        BookDTO bookDTO = bookDTO();
+
         Optional<Book> result = Optional.of(book);
         when(bookRepository.save((Book) any())).thenReturn(book);
         when(bookRepository.getBookByCode(anyInt())).thenReturn(result);
-        when(mapper.BookToDTO((Book)any())).thenReturn(bookDTO);
+        when(mapper.bookToDTO((Book)any())).thenReturn(bookDTO);
         assertSame(bookDTO,bookService.updateBook(new BookDTO(),1));
         verify(bookRepository).save((Book) any());
         verify(bookRepository).getBookByCode(anyInt());
-        verify(mapper).BookToDTO((Book) any());
+        verify(mapper).bookToDTO((Book) any());
     }
     @Test
     void updateBook_NoBookFoundTest() {
+        Book book = book();
+        BookDTO bookDTO = bookDTO();
+
         when(bookRepository.save((Book)any())).thenReturn(book);
         when(bookRepository.getBookByCode(anyInt())).thenReturn(Optional.empty());
-        when(mapper.BookToDTO((Book)any())).thenReturn(new BookDTO());
+        when(mapper.bookToDTO((Book)any())).thenReturn(new BookDTO());
         assertThrows(BookNotFound.class, ()-> bookService.updateBook(bookDTO, 1));
         verify(bookRepository).getBookByCode(anyInt());
     }
 
     @Test
     void deleteBookTest() {
+
+        Book book = book();
+
         doNothing().when(bookRepository).delete((Book) any());
         Optional<Book> result = Optional.of(book);
         when(bookRepository.getBookByCode(anyInt())).thenReturn(result);
@@ -156,48 +153,57 @@ class BookServiceTest {
     }
     @Test
     void getBooksByName_OneBookTest() {
+
+        Book book = book();
+
         ArrayList<Book> bookList = new ArrayList<>();
         bookList.add(book);
         Optional<List<Book>> result = Optional.of(bookList);
         when(bookRepository.getBooksByName(anyString())).thenReturn(result);
-        when(mapper.BookToDTO((Book)any())).thenReturn(new BookDTO());
+        when(mapper.bookToDTO((Book)any())).thenReturn(new BookDTO());
         assertEquals(1,bookService.getBooksByName("Name1").size());
         verify(bookRepository).getBooksByName(anyString());
-        verify(mapper).BookToDTO((Book)any());
+        verify(mapper).bookToDTO((Book)any());
 
     }
     @Test
     void getBooksByName_TwoBookTest() {
+
+        Book book = book();
+        Book anotherBook = book();
         ArrayList<Book> bookList = new ArrayList<>();
         bookList.add(book);
-        anotherBook.setBookName("Name1");
+
         bookList.add(anotherBook);
         Optional<List<Book>> result = Optional.of(bookList);
         when(bookRepository.getBooksByName(anyString())).thenReturn(result);
-        when(mapper.BookToDTO((Book)any())).thenReturn(new BookDTO());
+        when(mapper.bookToDTO((Book)any())).thenReturn(new BookDTO());
         assertEquals(2,bookService.getBooksByName("Name1").size());
         verify(bookRepository).getBooksByName(anyString());
-        verify(mapper,atLeast(1)).BookToDTO((Book)any());
+        verify(mapper,atLeast(1)).bookToDTO((Book)any());
 
     }
     @Test
     void getBooksByName_BookNotFoundTest() {
 
         when(bookRepository.getBooksByName(anyString())).thenReturn(Optional.empty());
-        when(mapper.BookToDTO((Book)any())).thenReturn(new BookDTO());
+        when(mapper.bookToDTO((Book)any())).thenReturn(new BookDTO());
         assertThrows(BookNotFound.class,()->bookService.getBooksByName("Name1"));
         verify(bookRepository).getBooksByName(anyString());
     }
 
-    @Test
+    /*@Test
     void setBookAsRead_BookNotFoundTest() {
+        Book book = book();
+        Book anotherBook = book();
+
         when(bookRepository.save((Book)any())).thenReturn(book);
         when(bookRepository.getBookByCode(anyInt())).thenReturn(Optional.empty());
         when(mapper.DTOToBook((BookDTO) any())).thenReturn(anotherBook);
         when(mapper.BookToDTO((Book)any())).thenReturn(new BookDTO());
         assertThrows(BookNotFound.class,()-> bookService.setBookAsRead(1));
         verify(bookRepository).getBookByCode(anyInt());
-    }
+    }*/
 }
 
 

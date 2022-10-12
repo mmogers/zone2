@@ -6,7 +6,7 @@ import lv.marmog.zone2.zone2.models.Book;
 
 public interface BookMapperInterface {
 
-     BookDTO BookToDTO(Book book);
+     BookDTO bookToDTO(Book book);
 
      Book DTOToBook(BookDTO bookDTO);
 

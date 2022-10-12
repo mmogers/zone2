@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class BookMapper implements BookMapperInterface {
 
-    public BookDTO BookToDTO(Book book)  {
+    public BookDTO bookToDTO(Book book)  {
         BookDTO bookDTO = new BookDTO();
         bookDTO.setAuthor(book.getAuthor());
         bookDTO.setBookCode(book.getBookCode());
