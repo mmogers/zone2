@@ -8,6 +8,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 class Zone2ApplicationTests {
 	@Test
-   void contextLoads() {  Zone2Application.main(new String[] {});}
+   void contextLoads() {  }
 }
 
