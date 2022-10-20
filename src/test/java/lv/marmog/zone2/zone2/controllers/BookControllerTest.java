@@ -36,10 +36,8 @@ class BookControllerTest {
     @Autowired
     private BookController bookController;
 
-
     @MockBean
     BookService bookService;
-
 
     @BeforeEach
     void setUp() {
