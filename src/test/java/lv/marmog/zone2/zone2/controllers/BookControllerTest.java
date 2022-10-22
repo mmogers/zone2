@@ -4,7 +4,7 @@ package lv.marmog.zone2.zone2.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lv.marmog.zone2.zone2.DTO.BookDTO;
-import lv.marmog.zone2.zone2.models.errors.BookNotFound;
+import lv.marmog.zone2.zone2.models.errors.BookNotFoundException;
 import lv.marmog.zone2.zone2.services.interfaces.BookService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -136,7 +136,7 @@ class BookControllerTest {
         bookDTO.setBookCode(0);
 
         String content = (new ObjectMapper()).writeValueAsString(bookDTO);
-        when(bookService.updateBook(bookDTO, 0)).thenThrow(new BookNotFound(0));
+        when(bookService.updateBook(bookDTO, 0)).thenThrow(new BookNotFoundException(HttpStatus.NOT_FOUND, ""));
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                         .put("/book" + "/")
                         .contentType(APPLICATION_JSON)

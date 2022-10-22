@@ -2,16 +2,18 @@ package lv.marmog.zone2.zone2.DTO;
 
 import lombok.*;
 
+import javax.validation.constraints.NotNull;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @ToString
 @AllArgsConstructor
 public class BookDTO {
-
+    @NotNull
     private Integer bookCode;
 
-    public String bookName;
+    private String bookName;
 
     private String author;
 

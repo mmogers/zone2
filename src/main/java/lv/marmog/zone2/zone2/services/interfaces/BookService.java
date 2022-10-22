@@ -3,6 +3,7 @@ package lv.marmog.zone2.zone2.services.interfaces;
 import lv.marmog.zone2.zone2.DTO.BookDTO;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface BookService {
 
@@ -10,7 +11,7 @@ public interface BookService {
 
     public List<BookDTO> getBooks();
 
-    public BookDTO getBookByCode(Integer code);
+    public Optional<BookDTO> getBookByCode(Integer bookCode);
 
     public BookDTO updateBook(BookDTO book, Integer id);
 

@@ -1,5 +1,4 @@
 package lv.marmog.zone2.zone2.controllers;
-//hateoas
 import lv.marmog.zone2.zone2.DTO.BookDTO;
 import lv.marmog.zone2.zone2.models.Book;
 import lv.marmog.zone2.zone2.services.interfaces.BookService;
@@ -12,6 +11,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class BookController {
@@ -35,22 +35,18 @@ public class BookController {
         }
     }
 
-    @GetMapping("/book/{id}")
-    public ResponseEntity<BookDTO> getBook(@Valid @PathVariable Integer id) {
-        BookDTO book = bookService.getBookByCode(id);
+    @GetMapping("/book/{bookCode}")
+    public ResponseEntity<Optional<BookDTO>> getBook(@Valid @PathVariable Integer bookCode) {
+        Optional<BookDTO> bookDTO = bookService.getBookByCode(bookCode);
 
-        if (book != null) {
-            return new ResponseEntity<>(book, HttpStatus.OK);
-        }
-
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return ResponseEntity.ok(bookDTO);
     }
 
     @PostMapping("/book-create")
     @ExceptionHandler(HttpClientErrorException.class)
-    public ResponseEntity<BookDTO> createNewBook(@Valid @RequestBody BookDTO book) {
+    public ResponseEntity<BookDTO> createNewBook(@Valid @RequestBody BookDTO bookDTO) {
         try {
-            BookDTO bookSaved = bookService.addBook(book);
+            BookDTO bookSaved = bookService.addBook(bookDTO);
 
             if (bookSaved != null) {
                 return new ResponseEntity<>(bookSaved, HttpStatus.CREATED);
@@ -61,13 +57,7 @@ public class BookController {
         }
     }
 
-    @PutMapping("/book/{bookCode}")
-    public ResponseEntity<BookDTO> updateBook(@Valid @RequestBody BookDTO bookDTO, @PathVariable @NotNull Integer bookCode) {
 
-        BookDTO updatedBookDTO = bookService.updateBook(bookDTO, bookCode);
-
-        return ResponseEntity.ok(updatedBookDTO);
-    }
 
     @DeleteMapping("/book/{bookCode}")
     public ResponseEntity<Book> deleteBook(@PathVariable @NotNull Integer bookCode) {
@@ -79,18 +69,33 @@ public class BookController {
         }
     }
 
-    @GetMapping("/books-by-author")
-    public ResponseEntity<List<BookDTO>> getBooksByAuthor(@RequestParam String name) {
+    @GetMapping("/books-by-author/{name}")
+    public ResponseEntity<List<BookDTO>> getBooksByAuthor(@PathVariable @NotNull  String name) {
         try {
             List<BookDTO> books = bookService.getBooksByName(name);
-
-            if ( books.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            if(books.isEmpty()){
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             return new ResponseEntity<>(books, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+
+    }
+    @PutMapping("/book/{bookCode}")
+    public ResponseEntity<BookDTO> updateBook(@Valid @RequestBody BookDTO bookDTO, @PathVariable @NotNull Integer bookCode) {
+        try {
+            BookDTO updatedBookDTO = bookService.updateBook(bookDTO, bookCode);
+            if (updatedBookDTO==null){
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(updatedBookDTO, HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 
-}
+
+
+}//end class
