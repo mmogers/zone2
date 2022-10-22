@@ -3,6 +3,7 @@ package lv.marmog.zone2.zone2.services.implementation;
 import lv.marmog.zone2.zone2.DTO.BookDTO;
 import lv.marmog.zone2.zone2.mappers.BookMapper;
 import lv.marmog.zone2.zone2.models.Book;
+import lv.marmog.zone2.zone2.models.constants.Constants;
 import lv.marmog.zone2.zone2.models.errors.BookAlreadyExistsException;
 import lv.marmog.zone2.zone2.models.errors.BookNotFoundException;
 import lv.marmog.zone2.zone2.repositories.BookRepository;
@@ -12,6 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -82,20 +84,48 @@ class BookServiceTest {
         when(mapper.bookToDTO((Book)any())).thenReturn(bookDTO);
         verify(bookRepository).findAll();
     }
-    //peredelat'
+
     @Test
     void getBookByCode() {
-        //Book book = book();
-        //BookDTO bookDTO = bookDTO();
-
-        //Optional<Book> result = Optional.of(book);
-        //Optional<BookDTO> bookDTOresult = Optional.of(bookDTO);
-        //when(bookRepository.getBookByCode(anyInt())).thenReturn(result); //Optional.of(book);
-       // when(mapper.bookToDTO((Book)any())).thenReturn(bookDTO);
-        //assertSame(bookDTOresult, bookService.getBookByCode(100));
-        //verify(bookRepository, times(1)).getBookByCode(anyInt());
-        //verify(mapper).bookToDTO(book);
+        Book book = book();
+        Optional<Book> result = Optional.of(book);
+        when(bookRepository.getBookByCode(anyInt())).thenReturn(result); //Optional.of(book);
+        when(mapper.bookToDTO((Book)any())).thenReturn(new BookDTO());
+        assertTrue(bookService.getBookByCode(100).isPresent());
+        verify(bookRepository, times(1)).getBookByCode(anyInt());
+        verify(mapper).bookToDTO((Book) any());
     }
+
+    @Test
+    void getBookByCode_BookAlreadyExists() {
+        Book book = book();
+        Optional<Book> result = Optional.of(book);
+        when(bookRepository.getBookByCode(anyInt())).thenReturn(result);
+        when(mapper.bookToDTO((Book)any())).thenThrow(new BookAlreadyExistsException(HttpStatus.CONTINUE, Constants.CODE_ALREADY_EXISTS));
+        assertThrows(BookAlreadyExistsException.class, () -> bookService.getBookByCode(100));
+        verify(bookRepository, times(1)).getBookByCode(anyInt());
+        verify(mapper).bookToDTO((Book) any());
+    }
+
+    @Test
+    void getBookByCode_NotFound() {
+
+        when(bookRepository.getBookByCode(anyInt())).thenReturn(Optional.empty());
+        when(mapper.bookToDTO((Book)any())).thenReturn(new BookDTO());
+        assertThrows(BookNotFoundException.class, () -> bookService.getBookByCode(100));
+        verify(bookRepository, times(1)).getBookByCode(anyInt());
+    }
+
+    @Test
+    void getBookByCode_InvalidCodeNotFound() {
+        Book book = book();
+        Optional<Book> result = Optional.of(book);
+        when(bookRepository.getBookByCode(anyInt())).thenReturn(result);
+        when(mapper.bookToDTO((Book)any())).thenReturn(new BookDTO());
+        assertThrows(BookNotFoundException.class, () -> bookService.getBookByCode(0));
+
+    }
+
 
     @Test
     void updateBookTest() {
