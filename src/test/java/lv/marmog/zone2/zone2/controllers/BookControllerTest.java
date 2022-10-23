@@ -43,22 +43,6 @@ class BookControllerTest {
     void setUp() {
     }
 
-
-
-/*
- @Test
-    void getAllBooks() {
-    }
-*/
-
-
-
-/*@Test
-    void getBook() {
-    }*/
-
-
-
 @Test
     void createNewBookTest_Success() throws Exception {
         BookDTO bookDTO = bookDTO();

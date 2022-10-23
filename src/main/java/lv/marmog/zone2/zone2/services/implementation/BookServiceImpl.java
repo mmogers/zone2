@@ -92,8 +92,8 @@ public class BookServiceImpl implements BookService {
 
     }
     @Override
-        public List<BookDTO> getBooksByName(String bookName){
-        Optional<List<Book>> books=  bookRepository.getBooksByName(bookName);
+        public List<BookDTO> getBooksByAuthor(String author){
+        Optional<List<Book>> books=  bookRepository.getBooksByAuthor(author);
         if(!books.isPresent()){
             throw new BookNotFoundException(HttpStatus.NOT_FOUND, Constants.NAME_NOT_FOUND);
         }

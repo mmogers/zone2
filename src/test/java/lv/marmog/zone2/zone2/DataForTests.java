@@ -16,23 +16,16 @@ public class DataForTests {
         return testList;
     }
 
-    public static ArrayList<BookDTO> bookDTOList() {
-        ArrayList<BookDTO> testList = new ArrayList<>();
-        testList.add(new BookDTO(100, "Name1", "Author1", "home", true));
-        testList.add(new BookDTO(200, "Name2", "Author2", "home", false));
-        return testList;
-    }
-
     static Date date = new Date();
     public static Book book(){
-        Book book = new Book(1, 100, "Name1", date, "Author1", true, "home");
-        return book;
+        return new Book(1, 100, "Name1", date, "Author1", true, "home");
+
     }
 
 
     public static BookDTO bookDTO(){
-        BookDTO bookDTO = new BookDTO(100, "Name1", "Author1", "home", true);
-        return bookDTO;
+        return new BookDTO(100, "Name1", "Author1", "home", true);
+
     }
 }
 

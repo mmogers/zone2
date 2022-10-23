@@ -137,35 +137,15 @@ import static org.junit.jupiter.api.Assertions.*;
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, err.getStatusCode());
 
     }
+
     @Order(6)
-    @Test
-     void getBooksByAuthorIntTest() throws JSONException {
-        String response = this.restTemplate.getForObject("/books-by-author/{name}", String.class, "Me Marina" );
-        JSONAssert.assertEquals("[\n" +
-                "    {\n" +
-                "        \"bookCode\": 7432,\n" +
-                "        \"bookName\": \"Its a new test book\",\n" +
-                "        \"author\": \"Me Marina\",\n" +
-                "        \"location\": \"home\",\n" +
-                "        \"isRead\": true\n" +
-                "    },\n" +
-                "    {\n" +
-                "        \"bookCode\": 7454345,\n" +
-                "        \"bookName\": \"Its a new test book\",\n" +
-                "        \"author\": \"Me Marina\",\n" +
-                "        \"location\": \"home\",\n" +
-                "        \"isRead\": true\n" +
-                "    }\n" +
-                "]", response, false);
-    }
-    @Order(7)
     @Test
      void getBooksByAuthorIntTest_BadUrlAuthor(){
         ResponseEntity<String> err = restTemplate.getForEntity("/books-by-author/{name}", String.class, "Anything");
         assertEquals(HttpStatus.NOT_FOUND, err.getStatusCode());
     }
 
-    @Order(8)
+    @Order(7)
     @Test
      void createNewBookIntTest() throws JSONException {
         BookDTO bookDTO = new BookDTO();
@@ -180,6 +160,21 @@ import static org.junit.jupiter.api.Assertions.*;
                 () -> assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode()));
                 //() -> assertEquals(bookDTO, responseEntity.getBody()));
     }
+
+   @Order(8)
+   @Test
+   void getBooksByAuthorIntTest() throws JSONException {
+      String response = this.restTemplate.getForObject("/books-by-author/{name}", String.class, "Test Author" );
+      JSONAssert.assertEquals("[\n" +
+              "    {\n" +
+              "        \"bookCode\": 9001,\n" +
+              "        \"bookName\": \"Test Title\",\n" +
+              "        \"author\": \"Test Author\",\n" +
+              "        \"location\": \"Test Location\",\n" +
+              "        \"isRead\": true\n" +
+              "    }\n" +
+              "]", response, false);
+   }
 
     @Order(9)
     @Test

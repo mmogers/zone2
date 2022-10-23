@@ -33,7 +33,6 @@ class BookServiceTest {
 
 
     @Autowired
-    //@InjectMocks
     BookServiceImpl bookService;
 
     @MockBean
@@ -177,9 +176,9 @@ class BookServiceTest {
 
     @Test //????
     void getBooksByNameTest() {
-        when(bookRepository.getBooksByName(anyString())).thenReturn(Optional.of(new ArrayList<>()));
-        assertTrue(bookService.getBooksByName("Name").isEmpty());
-        verify(bookRepository).getBooksByName(anyString());
+        when(bookRepository.getBooksByAuthor(anyString())).thenReturn(Optional.of(new ArrayList<>()));
+        assertTrue(bookService.getBooksByAuthor("Name").isEmpty());
+        verify(bookRepository).getBooksByAuthor(anyString());
 
     }
     @Test
@@ -190,10 +189,10 @@ class BookServiceTest {
         ArrayList<Book> bookList = new ArrayList<>();
         bookList.add(book);
         Optional<List<Book>> result = Optional.of(bookList);
-        when(bookRepository.getBooksByName(anyString())).thenReturn(result);
+        when(bookRepository.getBooksByAuthor(anyString())).thenReturn(result);
         when(mapper.bookToDTO((Book)any())).thenReturn(new BookDTO());
-        assertEquals(1,bookService.getBooksByName("Name1").size());
-        verify(bookRepository).getBooksByName(anyString());
+        assertEquals(1,bookService.getBooksByAuthor("Name1").size());
+        verify(bookRepository).getBooksByAuthor(anyString());
         verify(mapper).bookToDTO((Book)any());
 
     }
@@ -207,20 +206,20 @@ class BookServiceTest {
 
         bookList.add(anotherBook);
         Optional<List<Book>> result = Optional.of(bookList);
-        when(bookRepository.getBooksByName(anyString())).thenReturn(result);
+        when(bookRepository.getBooksByAuthor(anyString())).thenReturn(result);
         when(mapper.bookToDTO((Book)any())).thenReturn(new BookDTO());
-        assertEquals(2,bookService.getBooksByName("Name1").size());
-        verify(bookRepository).getBooksByName(anyString());
+        assertEquals(2,bookService.getBooksByAuthor("Name1").size());
+        verify(bookRepository).getBooksByAuthor(anyString());
         verify(mapper,atLeast(1)).bookToDTO((Book)any());
 
     }
     @Test
     void getBooksByName_BookNotFoundTest() {
 
-        when(bookRepository.getBooksByName(anyString())).thenReturn(Optional.empty());
+        when(bookRepository.getBooksByAuthor(anyString())).thenReturn(Optional.empty());
         when(mapper.bookToDTO((Book)any())).thenReturn(new BookDTO());
-        assertThrows(BookNotFoundException.class,()->bookService.getBooksByName("Name1"));
-        verify(bookRepository).getBooksByName(anyString());
+        assertThrows(BookNotFoundException.class,()->bookService.getBooksByAuthor("Name1"));
+        verify(bookRepository).getBooksByAuthor(anyString());
     }
 
     /*@Test

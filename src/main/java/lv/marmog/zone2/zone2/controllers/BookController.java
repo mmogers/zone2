@@ -69,10 +69,10 @@ public class BookController {
         }
     }
 
-    @GetMapping("/books-by-author/{name}")
-    public ResponseEntity<List<BookDTO>> getBooksByAuthor(@PathVariable @NotNull  String name) {
+    @GetMapping("/books-by-author/{author}")
+    public ResponseEntity<List<BookDTO>> getBooksByAuthor(@PathVariable @NotNull  String author) {
         try {
-            List<BookDTO> books = bookService.getBooksByName(name);
+            List<BookDTO> books = bookService.getBooksByAuthor(author);
             if(books.isEmpty()){
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
