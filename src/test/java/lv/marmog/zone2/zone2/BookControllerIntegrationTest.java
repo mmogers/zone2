@@ -53,64 +53,64 @@ import static org.junit.jupiter.api.Assertions.*;
         JSONAssert.assertEquals("[\n" +
                 "    {\n" +
                 "        \"bookCode\": 12121,\n" +
-                "        \"bookName\": \"Peppi\",\n" +
-                "        \"author\": \"8\",\n" +
-                "        \"location\": \"home\",\n" +
+                "        \"bookName\": \"Book 1\",\n" +
+                "        \"author\": \"Author 1\",\n" +
+                "        \"location\": \"work\",\n" +
                 "        \"isRead\": true\n" +
                 "    },\n" +
                 "    {\n" +
                 "        \"bookCode\": 1712,\n" +
-                "        \"bookName\": \"I like my cat\",\n" +
-                "        \"author\": \"Me\",\n" +
-                "        \"location\": null,\n" +
-                "        \"isRead\": null\n" +
+                "        \"bookName\": \"Book 2\",\n" +
+                "        \"author\": \"Author 2\",\n" +
+                "        \"location\": \"work\",\n" +
+                "        \"isRead\": true\n" +
                 "    },\n" +
                 "    {\n" +
                 "        \"bookCode\": 112,\n" +
-                "        \"bookName\": \"Its a test book\",\n" +
-                "        \"author\": \"Me Again\",\n" +
-                "        \"location\": null,\n" +
-                "        \"isRead\": null\n" +
+                "        \"bookName\": \"Book 3\",\n" +
+                "        \"author\": \"Author 3\",\n" +
+                "        \"location\": \"home\",\n" +
+                "        \"isRead\": true\n" +
                 "    },\n" +
                 "    {\n" +
                 "        \"bookCode\": 512,\n" +
-                "        \"bookName\": \"Its a test book\",\n" +
-                "        \"author\": \"Me Again\",\n" +
-                "        \"location\": null,\n" +
-                "        \"isRead\": false\n" +
+                "        \"bookName\": \"Book 4\",\n" +
+                "        \"author\": \"Author 4\",\n" +
+                "        \"location\": \"home\",\n" +
+                "        \"isRead\": true\n" +
                 "    },\n" +
                 "    {\n" +
                 "        \"bookCode\": 712,\n" +
-                "        \"bookName\": \"Its a test book\",\n" +
-                "        \"author\": \"Me Again\",\n" +
-                "        \"location\": null,\n" +
+                "        \"bookName\": \"Book 5\",\n" +
+                "        \"author\": \"Author 5\",\n" +
+                "        \"location\": \"home\",\n" +
                 "        \"isRead\": true\n" +
                 "    },\n" +
                 "    {\n" +
                 "        \"bookCode\": 7452,\n" +
-                "        \"bookName\": \"Its a test book\",\n" +
-                "        \"author\": \"Me Again\",\n" +
+                "        \"bookName\": \"Book 6\",\n" +
+                "        \"author\": \"Author 6\",\n" +
                 "        \"location\": \"home\",\n" +
                 "        \"isRead\": true\n" +
                 "    },\n" +
                 "    {\n" +
                 "        \"bookCode\": 1111,\n" +
-                "        \"bookName\": \"Peppi\",\n" +
-                "        \"author\": \"3\",\n" +
+                "        \"bookName\": \"Book 7\",\n" +
+                "        \"author\": \"Author 7\",\n" +
                 "        \"location\": \"home\",\n" +
-                "        \"isRead\": null\n" +
+                "        \"isRead\": true\n" +
                 "    },\n" +
                 "    {\n" +
                 "        \"bookCode\": 7432,\n" +
-                "        \"bookName\": \"Its a new test book\",\n" +
-                "        \"author\": \"Me Marina\",\n" +
+                "        \"bookName\": \"Book 8\",\n" +
+                "        \"author\": \"Author 8\",\n" +
                 "        \"location\": \"home\",\n" +
                 "        \"isRead\": true\n" +
                 "    },\n" +
                 "    {\n" +
                 "        \"bookCode\": 7454345,\n" +
-                "        \"bookName\": \"Its a new test book\",\n" +
-                "        \"author\": \"Me Marina\",\n" +
+                "        \"bookName\": \"Book 9\",\n" +
+                "        \"author\": \"Author 9\",\n" +
                 "        \"location\": \"home\",\n" +
                 "        \"isRead\": true\n" +
                 "    }\n" +
@@ -138,14 +138,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
     }
 
-    @Order(6)
-    @Test
-     void getBooksByAuthorIntTest_BadUrlAuthor(){
-        ResponseEntity<String> err = restTemplate.getForEntity("/books-by-author/{name}", String.class, "Anything");
-        assertEquals(HttpStatus.NOT_FOUND, err.getStatusCode());
-    }
 
-    @Order(7)
+
+    @Order(6)
     @Test
      void createNewBookIntTest() throws JSONException {
         BookDTO bookDTO = new BookDTO();
@@ -160,8 +155,32 @@ import static org.junit.jupiter.api.Assertions.*;
                 () -> assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode()));
                 //() -> assertEquals(bookDTO, responseEntity.getBody()));
     }
+    @Order(7)
+    @Test
+    void createNewBookIntTest_incorrectInputCodeNull() throws JSONException {
+        BookDTO bookDTO = new BookDTO();
+        bookDTO.setBookName("Test Title");
+        bookDTO.setAuthor("Test Author");
+        bookDTO.setLocation("Test Location");
+        bookDTO.setIsRead(true);
+        ResponseEntity<BookDTO> responseEntity = this.restTemplate.postForEntity("/book-create", bookDTO, BookDTO.class );
+        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+    }
 
-   @Order(8)
+    @Order(8)
+    @Test
+    void createNewBookIntTest_incorrectInputSameCode() throws JSONException {
+        BookDTO bookDTO = new BookDTO();
+        bookDTO.setBookCode(9001);
+        bookDTO.setBookName("Test Title 2");
+        bookDTO.setAuthor("Test Author 2");
+        bookDTO.setLocation("Test Location 2");
+        bookDTO.setIsRead(true);
+        ResponseEntity<BookDTO> responseEntity = this.restTemplate.postForEntity("/book-create", bookDTO, BookDTO.class );
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    }
+
+   @Order(9)
    @Test
    void getBooksByAuthorIntTest() throws JSONException {
       String response = this.restTemplate.getForObject("/books-by-author/{name}", String.class, "Test Author" );
@@ -176,29 +195,11 @@ import static org.junit.jupiter.api.Assertions.*;
               "]", response, false);
    }
 
-    @Order(9)
-    @Test
-     void createNewBookIntTest_incorrectInputCodeNull() throws JSONException {
-        BookDTO bookDTO = new BookDTO();
-        bookDTO.setBookName("Test Title");
-        bookDTO.setAuthor("Test Author");
-        bookDTO.setLocation("Test Location");
-        bookDTO.setIsRead(true);
-        ResponseEntity<BookDTO> responseEntity = this.restTemplate.postForEntity("/book-create", bookDTO, BookDTO.class );
-        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-    }
-
     @Order(10)
     @Test
-     void createNewBookIntTest_incorrectInputSameCode() throws JSONException {
-        BookDTO bookDTO = new BookDTO();
-        bookDTO.setBookCode(9001);
-        bookDTO.setBookName("Test Title 2");
-        bookDTO.setAuthor("Test Author 2");
-        bookDTO.setLocation("Test Location 2");
-        bookDTO.setIsRead(true);
-        ResponseEntity<BookDTO> responseEntity = this.restTemplate.postForEntity("/book-create", bookDTO, BookDTO.class );
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    void getBooksByAuthorIntTest_BadUrlAuthor(){
+        ResponseEntity<String> err = restTemplate.getForEntity("/books-by-author/{name}", String.class, "Anything");
+        assertEquals(HttpStatus.NOT_FOUND, err.getStatusCode());
     }
 
     @Order(11)
