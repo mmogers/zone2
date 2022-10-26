@@ -43,7 +43,6 @@ public class BookController {
     }
 
     @PostMapping("/book-create")
-    @ExceptionHandler(HttpClientErrorException.class)
     public ResponseEntity<BookDTO> createNewBook(@Valid @RequestBody BookDTO bookDTO) {
         try {
             BookDTO bookSaved = bookService.addBook(bookDTO);
