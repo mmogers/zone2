@@ -60,9 +60,9 @@ public class BookServiceImpl implements BookService {
 
             throw new BookNotFoundException(HttpStatus.BAD_REQUEST, Constants.CODE_NOT_FOUND);
         }
-            Optional<BookDTO> bookDTO = bookRepository.getBookByCode(bookCode).flatMap(book -> {
-                return Optional.ofNullable(mapper.bookToDTO(book));
-            });
+            Optional<BookDTO> bookDTO = bookRepository.getBookByCode(bookCode).flatMap(book ->
+                 Optional.ofNullable(mapper.bookToDTO(book)));
+
 
             if(!bookDTO.isPresent()){
                 throw new BookNotFoundException(HttpStatus.NOT_FOUND, Constants.CODE_NOT_FOUND);
@@ -100,20 +100,4 @@ public class BookServiceImpl implements BookService {
         return books.get().stream().map(book -> mapper.bookToDTO(book)).collect(Collectors.toList());
 
     }
-
-    /*@Override
-    public void setBookAsRead(Integer bookCode) {
-        BookDTO existingBook = getBookByCode(bookCode);
-
-        if (existingBook != null) {
-
-            Book bookToSave = mapper.DTOToBook(existingBook);
-            bookToSave.setIsRead(true);
-
-            bookRepository.save(bookToSave);
-
-        } else{
-            throw new BookNotFound(bookCode);
-        }
-    }*/
 }

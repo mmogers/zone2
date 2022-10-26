@@ -19,5 +19,5 @@ public interface BookService {
 
     public List<BookDTO> getBooksByAuthor(String name);
 
-    //public void setBookAsRead(Integer bookCode);
+
 }
