@@ -52,65 +52,16 @@ import static org.junit.jupiter.api.Assertions.*;
         String response = this.restTemplate.getForObject("/books", String.class );
         JSONAssert.assertEquals("[\n" +
                 "    {\n" +
-                "        \"bookCode\": 12121,\n" +
-                "        \"bookName\": \"Book 1\",\n" +
-                "        \"author\": \"Author 1\",\n" +
-                "        \"location\": \"work\",\n" +
-                "        \"isRead\": true\n" +
-                "    },\n" +
-                "    {\n" +
-                "        \"bookCode\": 1712,\n" +
-                "        \"bookName\": \"Book 2\",\n" +
-                "        \"author\": \"Author 2\",\n" +
-                "        \"location\": \"work\",\n" +
-                "        \"isRead\": true\n" +
-                "    },\n" +
-                "    {\n" +
-                "        \"bookCode\": 112,\n" +
-                "        \"bookName\": \"Book 3\",\n" +
-                "        \"author\": \"Author 3\",\n" +
-                "        \"location\": \"home\",\n" +
-                "        \"isRead\": true\n" +
-                "    },\n" +
-                "    {\n" +
-                "        \"bookCode\": 512,\n" +
-                "        \"bookName\": \"Book 4\",\n" +
-                "        \"author\": \"Author 4\",\n" +
-                "        \"location\": \"home\",\n" +
-                "        \"isRead\": true\n" +
-                "    },\n" +
-                "    {\n" +
-                "        \"bookCode\": 712,\n" +
-                "        \"bookName\": \"Book 5\",\n" +
-                "        \"author\": \"Author 5\",\n" +
-                "        \"location\": \"home\",\n" +
-                "        \"isRead\": true\n" +
-                "    },\n" +
-                "    {\n" +
-                "        \"bookCode\": 7452,\n" +
-                "        \"bookName\": \"Book 6\",\n" +
-                "        \"author\": \"Author 6\",\n" +
-                "        \"location\": \"home\",\n" +
-                "        \"isRead\": true\n" +
-                "    },\n" +
-                "    {\n" +
-                "        \"bookCode\": 1111,\n" +
-                "        \"bookName\": \"Book 7\",\n" +
-                "        \"author\": \"Author 7\",\n" +
-                "        \"location\": \"home\",\n" +
-                "        \"isRead\": true\n" +
-                "    },\n" +
-                "    {\n" +
                 "        \"bookCode\": 7432,\n" +
-                "        \"bookName\": \"Book 8\",\n" +
-                "        \"author\": \"Author 8\",\n" +
+                "        \"bookName\": \"Its a new test book\",\n" +
+                "        \"author\": \"Me Marina\",\n" +
                 "        \"location\": \"home\",\n" +
                 "        \"isRead\": true\n" +
                 "    },\n" +
                 "    {\n" +
                 "        \"bookCode\": 7454345,\n" +
-                "        \"bookName\": \"Book 9\",\n" +
-                "        \"author\": \"Author 9\",\n" +
+                "        \"bookName\": \"Its a new test book\",\n" +
+                "        \"author\": \"Me Marina\",\n" +
                 "        \"location\": \"home\",\n" +
                 "        \"isRead\": true\n" +
                 "    }\n" +
@@ -127,7 +78,7 @@ import static org.junit.jupiter.api.Assertions.*;
     @Order(4)
     @Test
      void getBookIntTest() throws JSONException {
-        ResponseEntity<String> response = this.restTemplate.getForEntity("/book/{bookCode}", String.class, 12121 );
+        ResponseEntity<String> response = this.restTemplate.getForEntity("/book/{bookCode}", String.class, 7432 );
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
     @Order(5)
