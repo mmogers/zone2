@@ -29,4 +29,5 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
     List<Book> findAll();
 
     boolean existsByBookCode(Integer bookCode);
+
 }
