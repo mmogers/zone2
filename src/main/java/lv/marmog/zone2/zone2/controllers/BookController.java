@@ -58,7 +58,7 @@ public class BookController {
 
 
 
-    @DeleteMapping("/book/{bookCode}")
+     @DeleteMapping("/book/{bookCode}")
     public ResponseEntity<Book> deleteBook(@PathVariable @NotNull Integer bookCode) {
         try {
             bookService.deleteBook(bookCode);
